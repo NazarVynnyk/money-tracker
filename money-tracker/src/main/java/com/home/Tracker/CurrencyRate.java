@@ -2,17 +2,37 @@ package com.home.Tracker;
 
 import com.google.gson.Gson;
 import com.home.Entity.CurrencyConversionResponse;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class CurrenncyRate {
-    // API Provider URL
+/**
+ * This CurrencyRate class contains methods for receiving foreign exchange rates published by the European Central Bank
+ *
+ * @author Nazar Vynnyk
+ */
+
+public class CurrencyRate {
+
+    private static final Logger LOGGER = Logger.getLogger(CurrencyRate.class);
+
+    /**
+     * Url for getting currency rates
+     */
     private static final String API_PROVDIER = "http://api.fixer.io/";
 
-    public static double convert(String fromCurrency, String toCurrency) {
+    /**
+     * Receives exchange rate for 'fromCurrency' against 'toCurrency' from site: ​http://fixer.io​,
+     *
+     * @param fromCurrency - base currency for which we receive exchange rate
+     * @param toCurrency   - currency against which we receive request.
+     * @return exchange rate
+     */
+
+    public double convert(String fromCurrency, String toCurrency) {
 
         if ((fromCurrency != null && !fromCurrency.isEmpty())
                 && (toCurrency != null && !toCurrency.isEmpty())) {
@@ -26,14 +46,19 @@ public class CurrenncyRate {
         return 0.0;
     }
 
-    // Method to get the response from API
-    private static CurrencyConversionResponse getResponse(String strUrl) {
+    /**
+     * Receives all rates in JSON format and converts them to currencyConversionResponse
+     *
+     * @param strUrl - url for receiving JSON  with exchange rates
+     * @return - CurrencyConversionResponse object that contains map of all rates
+     */
+    private CurrencyConversionResponse getResponse(String strUrl) {
         CurrencyConversionResponse response = null;
         Gson gson = new Gson();
         StringBuilder sb = new StringBuilder();
 
         if (strUrl == null || strUrl.isEmpty()) {
-            System.out.println("Application Error");
+            LOGGER.info("url in getResponse method fails");
             return null;
         }
         URL url;
@@ -49,8 +74,7 @@ public class CurrenncyRate {
             stream.close();
             response = gson.fromJson(sb.toString(), CurrencyConversionResponse.class);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return response;
     }
