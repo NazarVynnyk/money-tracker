@@ -17,11 +17,10 @@ import java.util.stream.Collectors;
 
 import static com.home.Tracker.CurrenncyRate.convert;
 
-public class ExpenceManager {
+public class ExpenseManager {
 
-    private static final Logger LOGGER = Logger.getLogger(ExpenceManager.class);
+    private static final Logger LOGGER = Logger.getLogger(ExpenseManager.class);
     private static final Map<Date, List<Expense>> allExpenses = new TreeMap<>();
-
 
     public static void addExpense(String newExpense) {
 
@@ -129,6 +128,7 @@ public class ExpenceManager {
                 spendMoney += conversionRate * amount;
             }
         }
+        System.out.println();
         System.out.println(String.format("%.2f %s", spendMoney, cur));
     }
 

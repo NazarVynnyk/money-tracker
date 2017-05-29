@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static com.home.Tracker.ExpenceManager.addExpense;
-import static com.home.Tracker.ExpenceManager.clear;
-import static com.home.Tracker.ExpenceManager.list;
-import static com.home.Tracker.ExpenceManager.total;
+import static com.home.Tracker.ExpenseManager.addExpense;
+import static com.home.Tracker.ExpenseManager.clear;
+import static com.home.Tracker.ExpenseManager.list;
+import static com.home.Tracker.ExpenseManager.total;
 
 public class CurrencyConvertor {
 
