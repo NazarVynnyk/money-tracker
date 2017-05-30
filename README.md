@@ -11,6 +11,7 @@ To run an application:
 - print command: - java –jar target\money-tracker-1.0.jar
 
 Application supports following commands: 
+
 ● add 2017-04-25 12 USD Jogurt  - adds expense entry to the list 
 of user expenses. Expenses for various dates could be added in 
 any order. Command accepts following parameters: 
