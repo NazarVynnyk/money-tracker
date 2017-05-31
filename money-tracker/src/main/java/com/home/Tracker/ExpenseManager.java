@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 public class ExpenseManager {
 
     private static final Logger LOGGER = Logger.getLogger(ExpenseManager.class);
-    private static final Map<Date, List<Expense>> allExpenses = new TreeMap<>();
-    private CurrencyRate currencyRate = new CurrencyRate();
+    protected static Map <Date, List <Expense>> allExpenses = new TreeMap <>();
+    protected CurrencyRate currencyRate = new CurrencyRate();
 
     /**
      * Starts expenses management application thru processing incoming string
@@ -77,12 +77,12 @@ public class ExpenseManager {
         Expense expense = createExpense(newExpense);
 
         if (date != null && expense != null && !allExpenses.containsKey(date)) {
-            List<Expense> expenses = new ArrayList<>();
+            List <Expense> expenses = new ArrayList <>();
             expenses.add(expense);
             allExpenses.put(date, expenses);
 
         } else if (date != null && expense != null) {
-            List<Expense> expenses = allExpenses.get(date);
+            List <Expense> expenses = allExpenses.get(date);
             expenses.add(expense);
             allExpenses.put(date, expenses);
 
@@ -99,13 +99,13 @@ public class ExpenseManager {
      * @param newExpense - string with adding command name and string value of expense
      * @return new expense or null if incoming parameters are not correct
      */
-    private Expense createExpense(String newExpense) {
+    protected Expense createExpense(String newExpense) {
         String[] incoming = newExpense.split(" ");
         Expense expense = null;
         if (incoming.length >= 5) {
             try {
                 Double amount = Double.valueOf(incoming[2]);
-                Enum<Currency> currency = Currency.UNKNOWN;
+                Enum <Currency> currency = Currency.UNKNOWN;
                 if (Currency.contains(incoming[3])) {
                     currency = Currency.valueOf(incoming[3]);
                 }
@@ -134,7 +134,7 @@ public class ExpenseManager {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         System.out.println();
-        for (Map.Entry<Date, List<Expense>> entry : allExpenses.entrySet()) {
+        for (Map.Entry <Date, List <Expense>> entry : allExpenses.entrySet()) {
             System.out.println(formatter.format(entry.getKey()));
             for (Expense expense : entry.getValue()) {
                 System.out.println(expense);
@@ -163,7 +163,7 @@ public class ExpenseManager {
      * @param expenseDate - the incoming date
      * @return formatted date
      */
-    private Date getDate(String expenseDate) {
+    protected Date getDate(String expenseDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return formatter.parse(expenseDate);
@@ -178,9 +178,9 @@ public class ExpenseManager {
      *
      * @return map where currency is key and double amount - value
      */
-    private Map<Currency, Double> getCurrencies() {
-        List<Expense> expenses = allExpenses.values().stream().flatMap(expenses1 -> expenses1.stream()).collect(Collectors.toList());
-        Map<Currency, Double> map = new HashMap<>();
+    protected Map <Currency, Double> getCurrencies() {
+        List <Expense> expenses = allExpenses.values().stream().flatMap(expenses1 -> expenses1.stream()).collect(Collectors.toList());
+        Map <Currency, Double> map = new HashMap <>();
 
         for (Expense e : expenses) {
             Currency currency = (Currency) e.getCurrency();
@@ -201,9 +201,9 @@ public class ExpenseManager {
     public void total(String cur) {
         double spendMoney = 0.0;
         if (Currency.contains(cur)) {
-            Map<Currency, Double> currencies = getCurrencies();
+            Map <Currency, Double> currencies = getCurrencies();
 
-            for (Map.Entry<Currency, Double> entry : currencies.entrySet()) {
+            for (Map.Entry <Currency, Double> entry : currencies.entrySet()) {
                 String fromCurrency = entry.getKey().name();
                 double conversionRate;
                 if (fromCurrency.equals(cur)) {

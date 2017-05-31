@@ -70,4 +70,24 @@ public class Expense {
         format.setDecimalSeparatorAlwaysShown(false);
         return format.format(number);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Expense expense = (Expense) o;
+
+        if (!name.equals(expense.name)) return false;
+        if (!currency.equals(expense.currency)) return false;
+        return amount.equals(expense.amount);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + currency.hashCode();
+        result = 31 * result + amount.hashCode();
+        return result;
+    }
 }

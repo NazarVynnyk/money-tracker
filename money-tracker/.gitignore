@@ -1,15 +1,4 @@
 
-# Eclipse
-.classpath
-.project
-.settings/
-
-# Intellij
-.idea/
-*.iml
-*.iws
-
-# Maven
-log/
-target/
-
+/.idea/
+/target/
+/money-tracker.iml

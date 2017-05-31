@@ -58,7 +58,7 @@ public class CurrencyRate {
         StringBuilder sb = new StringBuilder();
 
         if (strUrl == null || strUrl.isEmpty()) {
-            LOGGER.info("url in getResponse method fails");
+            LOGGER.error("url in getResponse method fails");
             return null;
         }
         URL url;
