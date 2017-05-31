@@ -2,8 +2,6 @@ package com.home.Tracker;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Nazar Vynnyk
  */

@@ -4,6 +4,8 @@ import com.home.Entity.Currency;
 import com.home.Entity.Expense;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,45 +26,64 @@ import java.util.stream.Collectors;
 public class ExpenseManager {
 
     private static final Logger LOGGER = Logger.getLogger(ExpenseManager.class);
-    protected static Map <Date, List <Expense>> allExpenses = new TreeMap <>();
-    protected CurrencyRate currencyRate = new CurrencyRate();
+    protected Map <Date, List <Expense>> allExpenses;
+    protected CurrencyRate currencyRate;
+    protected Scanner scanner;
+
+    ExpenseManager() {
+        allExpenses = new TreeMap <>();
+        currencyRate = new CurrencyRate();
+        scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Text scanner which reads strings from console
+     *
+     * @return array of string
+     */
+    public String[] getIncomingString() {
+        System.out.println("Please enter command (to continue enter - out)");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String fromConsole = scanner.nextLine();
+        String[] incoming = fromConsole.split(" ");
+
+        return incoming;
+    }
 
     /**
      * Starts expenses management application thru processing incoming string
      */
     public void startMoneyTracker() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try {
             while (true) {
-                try {
-                    System.out.println("Please enter command (to continue enter - out)");
 
-                    String fromConsole = scanner.nextLine();
-                    String[] incoming = fromConsole.split(" ");
+                String[] incoming = getIncomingString();
 
-                    switch (incoming[0]) {
-                        case ("add"):
-                            addExpense(fromConsole);
-                            break;
-                        case ("list"):
-                            list();
-                            break;
-                        case ("clear"):
-                            clear(incoming[1]);
-                            break;
-                        case ("total"):
-                            total(incoming[1]);
-                            break;
-                        case ("out"):
-                            System.exit(0);
-                            break;
-                        default:
-                            System.out.println("not valid command");
-                            break;
-                    }
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(), e);
+                switch (incoming[0]) {
+                    case ("add"):
+                        addExpense(String.join(" ", incoming));
+                        break;
+                    case ("list"):
+                        list();
+                        break;
+                    case ("clear"):
+                        clear(incoming[1]);
+                        break;
+                    case ("total"):
+                        total(incoming[1]);
+                        break;
+                    case ("out"):
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("not valid command");
+                        break;
                 }
             }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        } finally {
+            scanner.close();
         }
     }
 
@@ -73,6 +94,7 @@ public class ExpenseManager {
      */
     public void addExpense(String newExpense) {
         String[] incoming = newExpense.split(" ");
+
         Date date = getDate(incoming[1]);
         Expense expense = createExpense(newExpense);
 
@@ -90,6 +112,7 @@ public class ExpenseManager {
             LOGGER.error("bead incoming command for adding expense");
             System.out.println("bead incoming command for adding expense");
         }
+
         list();
     }
 
@@ -163,7 +186,7 @@ public class ExpenseManager {
      * @param expenseDate - the incoming date
      * @return formatted date
      */
-    protected Date getDate(String expenseDate) {
+    public Date getDate(String expenseDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return formatter.parse(expenseDate);
